@@ -36,6 +36,7 @@ module OmniAuth
       end
 
       def request_phase
+	      super
         params = client.auth_code.authorize_params.merge(redirect_uri: callback_url).merge(authorize_params)
         params["appid"] = params.delete("client_id")
         redirect client.authorize_url(params)
@@ -59,10 +60,10 @@ module OmniAuth
       protected
       def build_access_token
         params = {
-          'appid' => client.id, 
+          'appid' => client.id,
           'secret' => client.secret,
           'code' => request.params['code'],
-          'grant_type' => 'authorization_code' 
+          'grant_type' => 'authorization_code'
           }.merge(token_params.to_hash(symbolize_keys: true))
         client.get_token(params, deep_symbolize(options.auth_token_params))
       end
